@@ -63,7 +63,7 @@ export default {
 				}
 			},
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
+				sans: ['Manrope', 'sans-serif'],
 				display: ['Clash Display', 'sans-serif']
 			},
 			borderRadius: {
