@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [session, setSession] = useState(null);
@@ -54,6 +56,11 @@ const Auth = () => {
         const { error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            data: {
+              name: name
+            }
+          }
         });
 
         if (error) throw error;
@@ -97,10 +104,26 @@ const Auth = () => {
         </div>
 
         <form onSubmit={handleAuth} className="space-y-4">
+          {!isLogin && (
+            <div>
+              <Label htmlFor="name" className="mb-1 block text-sm font-medium text-space">
+                Full Name
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your full name"
+                required={!isLogin}
+              />
+            </div>
+          )}
+          
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-space">
+            <Label htmlFor="email" className="mb-1 block text-sm font-medium text-space">
               Email
-            </label>
+            </Label>
             <Input
               id="email"
               type="email"
@@ -112,9 +135,9 @@ const Auth = () => {
           </div>
           
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-space">
+            <Label htmlFor="password" className="mb-1 block text-sm font-medium text-space">
               Password
-            </label>
+            </Label>
             <Input
               id="password"
               type="password"
