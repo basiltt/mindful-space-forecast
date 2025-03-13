@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { BarChart3, Users, Building2, FloorPlan, Workflow } from 'lucide-react';
+import { BarChart3, Users, Building2, LayoutGrid, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const WorkspaceAnalysis = () => {
@@ -24,7 +24,7 @@ const WorkspaceAnalysis = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <div className="mb-4 bg-coral/10 w-12 h-12 rounded-full flex items-center justify-center">
-                <FloorPlan className="text-coral" size={24} />
+                <LayoutGrid className="text-coral" size={24} />
               </div>
               <h3 className="text-xl font-display font-medium text-space mb-2">Floor Planning</h3>
               <p className="text-gray-600 mb-4">Create intelligent floor plans based on your team's needs and workspace requirements.</p>

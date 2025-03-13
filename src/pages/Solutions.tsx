@@ -1,8 +1,7 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Building, Users, LineChart, CalendarDays, LucideIcon, FloorPlan, Workflow } from 'lucide-react';
+import { Building, Users, LineChart, CalendarDays, LucideIcon, LayoutGrid, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const SolutionCard = ({ 
@@ -41,7 +40,7 @@ const Solutions = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             <SolutionCard 
-              icon={FloorPlan} 
+              icon={LayoutGrid} 
               title="Space Planning" 
               description="Create optimal floor plans based on your organization's unique needs and requirements."
             />
