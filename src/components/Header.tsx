@@ -77,16 +77,16 @@ const Header = () => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#solutions" className="hero-link flex items-center gap-2">
+          <Link to="/solutions" className="hero-link flex items-center gap-2">
             <LayoutGrid size={16} />
             <span>Solutions</span>
-          </a>
-          <a href="#enterprise" className="hero-link flex items-center gap-2">
+          </Link>
+          <Link to="/enterprise" className="hero-link flex items-center gap-2">
             <Users size={16} />
             <span>Enterprise</span>
-          </a>
-          <a href="#analytics" className="hero-link">Analytics</a>
-          <a href="#resources" className="hero-link">Resources</a>
+          </Link>
+          <Link to="/analytics" className="hero-link">Analytics</Link>
+          <Link to="/resources" className="hero-link">Resources</Link>
         </nav>
         
         <div className="hidden md:flex items-center space-x-4">
@@ -105,7 +105,7 @@ const Header = () => {
                 <Link to="/auth">Log in</Link>
               </Button>
               <Button className="rounded-full bg-space text-white hover:bg-space/90 px-5" asChild>
-                <a href="#demo">Request demo</a>
+                <Link to="/demo">Request demo</Link>
               </Button>
             </>
           )}
@@ -127,30 +127,33 @@ const Header = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <nav className="flex flex-col space-y-4">
-            <a href="#solutions" className="flex items-center gap-2 py-2">
+            <Link to="/solutions" className="flex items-center gap-2 py-2" onClick={() => setMobileMenuOpen(false)}>
               <LayoutGrid size={16} />
               <span>Solutions</span>
-            </a>
-            <a href="#enterprise" className="flex items-center gap-2 py-2">
+            </Link>
+            <Link to="/enterprise" className="flex items-center gap-2 py-2" onClick={() => setMobileMenuOpen(false)}>
               <Users size={16} />
               <span>Enterprise</span>
-            </a>
-            <a href="#analytics" className="py-2">Analytics</a>
-            <a href="#resources" className="py-2">Resources</a>
+            </Link>
+            <Link to="/analytics" className="py-2" onClick={() => setMobileMenuOpen(false)}>Analytics</Link>
+            <Link to="/resources" className="py-2" onClick={() => setMobileMenuOpen(false)}>Resources</Link>
             <hr className="border-gray-200" />
             {session ? (
               <Button 
                 className="rounded-full bg-space text-white hover:bg-space/90 w-full flex items-center justify-center gap-2" 
-                onClick={handleSignOut}
+                onClick={() => {
+                  handleSignOut();
+                  setMobileMenuOpen(false);
+                }}
               >
                 <LogOut size={16} />
                 <span>Sign out</span>
               </Button>
             ) : (
               <>
-                <Link to="/auth" className="py-2">Log in</Link>
-                <Button className="rounded-full bg-space text-white hover:bg-space/90 w-full" asChild>
-                  <a href="#demo">Request demo</a>
+                <Link to="/auth" className="py-2" onClick={() => setMobileMenuOpen(false)}>Log in</Link>
+                <Button className="rounded-full bg-space text-white hover:bg-space/90 w-full" asChild onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/demo">Request demo</Link>
                 </Button>
               </>
             )}

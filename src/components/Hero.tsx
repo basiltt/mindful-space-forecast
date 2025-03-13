@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, BarChart3, Users, BuildingIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const counterRef = useRef<HTMLDivElement>(null);
@@ -73,13 +74,13 @@ const Hero = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 mb-16">
               <Button className="btn-primary rounded-full bg-space text-white px-6 py-3 flex items-center justify-center gap-2 hover:shadow-lg hover:scale-105 active:scale-95" asChild>
-                <a href="#workspace-analysis">
+                <Link to="/workspace-analysis">
                   Analyze workspace
                   <ArrowRight size={18} />
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" className="rounded-full border-space/20 px-5 py-2.5 hover:border-coral/50 hover:shadow-sm hover:bg-white/90 active:scale-95" asChild>
-                <a href="#demo">Book consultation</a>
+                <Link to="/demo">Book consultation</Link>
               </Button>
             </div>
             
