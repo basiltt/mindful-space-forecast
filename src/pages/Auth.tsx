@@ -68,6 +68,7 @@ const Auth = () => {
         description: error.message || "An error occurred during authentication",
         variant: "destructive",
       });
+      console.error("Authentication error:", error);
     } finally {
       setLoading(false);
     }
