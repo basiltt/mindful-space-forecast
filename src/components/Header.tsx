@@ -3,13 +3,29 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { LayoutGrid, Users, Menu } from 'lucide-react';
+import { LayoutGrid, Users, Menu, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/use-toast';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
+    // Fetch the current session
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
     const handleScroll = () => {
       const isScrolled = window.scrollY > 20;
       if (isScrolled !== scrolled) {
@@ -20,8 +36,25 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      subscription.unsubscribe();
     };
   }, [scrolled]);
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <motion.header 
@@ -35,10 +68,12 @@ const Header = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-full bg-space flex items-center justify-center">
-            <div className="h-2 w-2 rounded-full bg-coral"></div>
-          </div>
-          <span className="font-display text-xl font-medium text-space">Spacer<span className="text-coral">.</span></span>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="h-8 w-8 rounded-full bg-space flex items-center justify-center">
+              <div className="h-2 w-2 rounded-full bg-coral"></div>
+            </div>
+            <span className="font-display text-xl font-medium text-space">Spacer<span className="text-coral">.</span></span>
+          </Link>
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
@@ -55,12 +90,25 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="outline" className="rounded-full px-5" asChild>
-            <a href="#login">Log in</a>
-          </Button>
-          <Button className="rounded-full bg-space text-white hover:bg-space/90 px-5" asChild>
-            <a href="#demo">Request demo</a>
-          </Button>
+          {session ? (
+            <Button 
+              variant="outline" 
+              className="rounded-full px-5 flex items-center gap-2" 
+              onClick={handleSignOut}
+            >
+              <LogOut size={16} />
+              <span>Sign out</span>
+            </Button>
+          ) : (
+            <>
+              <Button variant="outline" className="rounded-full px-5" asChild>
+                <Link to="/auth">Log in</Link>
+              </Button>
+              <Button className="rounded-full bg-space text-white hover:bg-space/90 px-5" asChild>
+                <a href="#demo">Request demo</a>
+              </Button>
+            </>
+          )}
         </div>
 
         <button 
@@ -90,10 +138,22 @@ const Header = () => {
             <a href="#analytics" className="py-2">Analytics</a>
             <a href="#resources" className="py-2">Resources</a>
             <hr className="border-gray-200" />
-            <a href="#login" className="py-2">Log in</a>
-            <Button className="rounded-full bg-space text-white hover:bg-space/90 w-full" asChild>
-              <a href="#demo">Request demo</a>
-            </Button>
+            {session ? (
+              <Button 
+                className="rounded-full bg-space text-white hover:bg-space/90 w-full flex items-center justify-center gap-2" 
+                onClick={handleSignOut}
+              >
+                <LogOut size={16} />
+                <span>Sign out</span>
+              </Button>
+            ) : (
+              <>
+                <Link to="/auth" className="py-2">Log in</Link>
+                <Button className="rounded-full bg-space text-white hover:bg-space/90 w-full" asChild>
+                  <a href="#demo">Request demo</a>
+                </Button>
+              </>
+            )}
           </nav>
         </motion.div>
       )}
